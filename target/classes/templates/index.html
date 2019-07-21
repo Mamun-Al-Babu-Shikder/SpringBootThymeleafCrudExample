@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org">
+
+<head>
+
+    <title> HOME PAGE </title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="bootstrap.css">
+    <link rel="stylesheet" href="mystyle.css">
+    <script type="text/javascript" src="jquery.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+
+    <style>
+        .form-group{
+            margin-right: 20px;
+        }
+
+        table{
+            margin-top: 10px;
+        }
+    </style>
+
+</head>
+
+<body>
+
+
+<div class="container">
+
+    <div class="container">
+
+        <h3>Basic information form </h3>
+        <form action="/add" name="stu" method="post" th:object="${student}">
+            <table>
+                <tr>
+                    <td>
+                        <div class="form-group">
+                            <label for="name">Name:</label>
+                            <input type="text" class="form-control" id="name" placeholder="Enter Name" name="name" required>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="form-group">
+                            <label for="fatherName">Father's Name :</label>
+                            <input type="text" class="form-control" id="fatherName" placeholder="Enter Father's Name" name="fatherName" required>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="form-group">
+                            <label for="address">Address :</label>
+                            <input type="text" class="form-control" id="address" placeholder="Enter Address" name="address" required>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="form-group">
+                            <label for="dob">Date of birth :</label>
+                            <input type="date" class="form-control" id="dob" name="dob" required>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+            <button type="submit" class="btn btn-success">Save</button>
+        </form>
+
+        <table class="table table-striped" >
+            <tr>
+                <th>Student ID</th>
+                <th>Name</th>
+                <th>Father's Name</th>
+                <th>Address</th>
+                <th>date of birth</th>
+                <th>Edit</th>
+                <th>Delete</th>
+            </tr>
+            <tr th:each="student, item : ${stuList}">
+                <td th:text="${student.getId()}"/>
+                <td th:text="${student.getName()}"/>
+                <td th:text="${student.getFatherName()}"/>
+                <td th:text="${student.getAddress()}"/>
+                <td th:text="${student.getDob()}"/>
+                <td>
+                    <button type="button" class="btn btn-primary" data-toggle="modal" th:data-target="'#popup_dialog'+${item.index}" > Edit </button>
+
+                        <!-- Modal -->
+                        <div class="modal fade" th:id="'popup_dialog'+${item.index}" role="">
+                            <div class="modal-dialog">
+                                <!-- Modal content-->
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                        <h4 class="modal-title">Update Information</h4>
+                                    </div>
+                                    <div class="modal-body">
+
+                                        <form action="/update" name="stu" method="post" th:object="${update_student}">
+                                            <input type="hidden" th:value="${student.getId()}" name="id">
+                                            <table>
+                                                <tr>
+                                                    <td>
+                                                        <div class="form-group">
+                                                            <label >Name:</label>
+                                                            <input type="text" class="form-control"  placeholder="Enter Name" name="name" th:value="${student.getName()}" required>
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <div class="form-group">
+                                                            <label >Father's Name :</label>
+                                                            <input type="text" class="form-control"  placeholder="Enter Father's Name" name="fatherName" th:value="${student.getFatherName()}" required>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        <div class="form-group">
+                                                            <label>Address :</label>
+                                                            <input type="text" class="form-control"  placeholder="Enter Address" name="address" th:value="${student.getAddress()}" required>
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <div class="form-group">
+                                                            <label >Date of birth :</label>
+                                                            <input type="date" class="form-control"  name="dob" th:value="${student.getDob()}" required>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                            <button type="submit" class="btn btn-primary">Update</button>
+                                        </form>
+
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                </td>
+                <td>
+                <form action="/delete"  method="post" >
+                    <button type="submit" class="btn btn-danger" th:value="${student.getId()}" name="id"> Delete </button>
+                </form>
+                </td>
+            </tr>
+        </table>
+
+
+
+
+
+
+
+    </div>
+
+
+
+</div>
+
+
+</body>
